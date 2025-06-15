@@ -14,7 +14,7 @@ User credentials are stored in a plain text file `users.txt` in the format `user
    ```bash
    python app.py
    ```
-   The app will start in debug mode on `http://localhost:5000`.
+   The app will start in debug mode on `http://localhost:8080`.
 
 ## Default Credentials
 An example user is included:
