@@ -4,11 +4,11 @@ This repository contains a minimal Flask application with a simple login system.
 User credentials are stored in a plain text file `users.txt` in the format `username:hashed_password`.
 
 ## Setup
-1. Install dependencies (Flask):
+1. Install dependencies:
    ```bash
-   pip install flask
+   pip install flask werkzeug
    ```
-   If you do not have network access, make sure Flask is available in your environment.
+   If you do not have network access, make sure these packages are available in your environment.
 
 2. Run the application:
    ```bash

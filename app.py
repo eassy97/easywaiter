@@ -1,6 +1,26 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from werkzeug.security import generate_password_hash, check_password_hash
+"""Main Flask application."""
+
 import os
+import sys
+
+try:
+    from flask import (
+        Flask,
+        render_template,
+        request,
+        redirect,
+        url_for,
+        session,
+    )
+    from werkzeug.security import generate_password_hash, check_password_hash
+except ModuleNotFoundError as e:  # pragma: no cover - dependency check
+    missing = str(e).split("No module named ")[-1].strip("'")
+    print(
+        f"Missing dependency: {missing}.\n"
+        "Install required packages with 'pip install flask werkzeug'.",
+        file=sys.stderr,
+    )
+    raise
 
 app = Flask(__name__)
 app.secret_key = 'replace-with-a-secure-random-key'
