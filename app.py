@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
@@ -34,10 +34,7 @@ def verify_credentials(username: str, password: str) -> bool:
 @app.route('/')
 def index():
     if 'username' in session:
-        return render_template_string('''
-            <h1>Vítejte {{username}}!</h1>
-            <a href="{{ url_for('logout') }}">Odhlásit</a>
-        ''', username=session['username'])
+        return redirect(url_for('dashboard'))
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -48,25 +45,22 @@ def login():
         password = request.form.get('password', '')
         if verify_credentials(username, password):
             session['username'] = username
-            return redirect(url_for('index'))
+            return redirect(url_for('dashboard'))
         else:
             error = 'Neplatné uživatelské jméno nebo heslo.'
-    return render_template_string('''
-        <h2>Přihlášení</h2>
-        {% if error %}<p style="color:red;">{{error}}</p>{% endif %}
-        <form method="post">
-            <label>Uživatel:</label>
-            <input type="text" name="username" required><br>
-            <label>Heslo:</label>
-            <input type="password" name="password" required><br>
-            <input type="submit" value="Přihlásit">
-        </form>
-    ''', error=error)
+    return render_template('login.html', error=error)
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('login'))
+
+
+@app.route('/dashboard')
+def dashboard():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    return render_template('dashboard.html', username=session['username'])
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
