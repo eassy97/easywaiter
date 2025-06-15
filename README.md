@@ -17,6 +17,14 @@ User credentials are stored in a plain text file `users.txt` in the format `user
    This script launches `app.py` from its own directory so the `users.txt`
    file is always found even if you start the script from elsewhere.
    The app will start in debug mode on `http://localhost:8080`.
+   
+   If your shell reports `command not found: start.sh`, ensure you include
+   `./` before the script name:
+   ```bash
+   ./start.sh
+   ```
+   Most Unix-like systems do not search the current directory for
+   executables unless you use this prefix.
 
    If you prefer to run `python app.py` directly, make sure you are in
    the same directory as `app.py` to avoid "file not found" errors.
