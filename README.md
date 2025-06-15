@@ -12,22 +12,14 @@ User credentials are stored in a plain text file `users.txt` in the format `user
 
 2. Run the application:
    ```bash
-   ./start.sh
+   python3 app.py
    ```
-   This script launches `app.py` from its own directory so the `users.txt`
-   file is always found even if you start the script from elsewhere.
-   The app will start in debug mode on `http://localhost:8080`.
-   
-   If your shell reports `command not found: start.sh`, ensure you include
-   `./` before the script name:
-   ```bash
-   ./start.sh
-   ```
-   Most Unix-like systems do not search the current directory for
-   executables unless you use this prefix.
+   Because the app loads `users.txt` relative to its own location,
+   you can invoke it from any folder (e.g. `python3 /path/to/app.py`).
+   The server will start in debug mode on `http://localhost:8080`.
 
-   If you prefer to run `python app.py` directly, make sure you are in
-   the same directory as `app.py` to avoid "file not found" errors.
+   A convenience script `start.sh` is also provided if you prefer
+   to launch via `./start.sh`.
 
 ## Default Credentials
 An example user is included:
