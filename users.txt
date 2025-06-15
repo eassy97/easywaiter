@@ -1,1 +1,2 @@
-admin:password
+# username:hashed_password
+admin:pbkdf2:sha256:260000$31323334353637386162636465666768$da41f93a122fd1e72d7e6f5071fcef374dbb1d96bc09fdfbb9ac436533ebbe07

@@ -1,4 +1,5 @@
 from flask import Flask, render_template_string, request, redirect, url_for, session
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 app = Flask(__name__)
@@ -9,6 +10,7 @@ USERS_FILE = 'users.txt'
 # Helper function to load users from the text file
 
 def load_users():
+    """Return a dict of username to hashed password."""
     users = {}
     if os.path.exists(USERS_FILE):
         with open(USERS_FILE, 'r') as f:
@@ -16,9 +18,18 @@ def load_users():
                 line = line.strip()
                 if not line or ':' not in line:
                     continue
-                username, password = line.split(':', 1)
-                users[username] = password
+                username, hashed = line.split(':', 1)
+                users[username] = hashed
     return users
+
+
+def verify_credentials(username: str, password: str) -> bool:
+    """Check provided credentials against the stored hash."""
+    users = load_users()
+    hashed = users.get(username)
+    if not hashed:
+        return False
+    return check_password_hash(hashed, password)
 
 @app.route('/')
 def index():
@@ -35,8 +46,7 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username', '')
         password = request.form.get('password', '')
-        users = load_users()
-        if users.get(username) == password:
+        if verify_credentials(username, password):
             session['username'] = username
             return redirect(url_for('index'))
         else:
