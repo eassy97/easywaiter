@@ -5,7 +5,9 @@ import os
 app = Flask(__name__)
 app.secret_key = 'replace-with-a-secure-random-key'
 
-USERS_FILE = 'users.txt'
+# Always load the user file relative to this script so it works regardless
+# of the current working directory.
+USERS_FILE = os.path.join(os.path.dirname(__file__), 'users.txt')
 
 # Helper function to load users from the text file
 
@@ -16,7 +18,7 @@ def load_users():
         with open(USERS_FILE, 'r') as f:
             for line in f:
                 line = line.strip()
-                if not line or ':' not in line:
+                if not line or line.startswith('#') or ':' not in line:
                     continue
                 username, hashed = line.split(':', 1)
                 users[username] = hashed

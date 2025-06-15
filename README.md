@@ -14,8 +14,8 @@ User credentials are stored in a plain text file `users.txt` in the format `user
    ```bash
    ./start.sh
    ```
-   This script launches `app.py` from its own directory, so you can
-   execute it whether or not you are currently in the repository folder.
+   This script launches `app.py` from its own directory so the `users.txt`
+   file is always found even if you start the script from elsewhere.
    The app will start in debug mode on `http://localhost:8080`.
 
    If you prefer to run `python app.py` directly, make sure you are in
