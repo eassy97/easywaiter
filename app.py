@@ -12,12 +12,11 @@ try:
         url_for,
         session,
     )
-    from werkzeug.security import generate_password_hash, check_password_hash
 except ModuleNotFoundError as e:  # pragma: no cover - dependency check
     missing = str(e).split("No module named ")[-1].strip("'")
     print(
         f"Missing dependency: {missing}.\n"
-        "Install required packages with 'pip install flask werkzeug'.",
+        "Install required package with 'pip install flask'.",
         file=sys.stderr,
     )
     raise
@@ -32,7 +31,7 @@ USERS_FILE = os.path.join(os.path.dirname(__file__), 'users.txt')
 # Helper function to load users from the text file
 
 def load_users():
-    """Return a dict of username to hashed password."""
+    """Return a dict of username to plaintext password."""
     users = {}
     if os.path.exists(USERS_FILE):
         with open(USERS_FILE, 'r') as f:
@@ -40,18 +39,18 @@ def load_users():
                 line = line.strip()
                 if not line or line.startswith('#') or ':' not in line:
                     continue
-                username, hashed = line.split(':', 1)
-                users[username] = hashed
+                username, password = line.split(':', 1)
+                users[username] = password
     return users
 
 
 def verify_credentials(username: str, password: str) -> bool:
-    """Check provided credentials against the stored hash."""
+    """Check provided credentials against stored plaintext passwords."""
     users = load_users()
-    hashed = users.get(username)
-    if not hashed:
+    stored = users.get(username)
+    if stored is None:
         return False
-    return check_password_hash(hashed, password)
+    return stored == password
 
 @app.route('/')
 def index():
